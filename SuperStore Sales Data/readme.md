@@ -1,0 +1,21 @@
+# Tools and Techniques Used
+
+- Power BI Desktop
+- Stacked Bar Chart
+- Donut Chart
+- Line Chart
+- Forecast Line (Analytics Pane)
+- Card Visuals
+- Pie Chart
+- Clustered Column Chart
+- Map Visual
+- Slicers for dynamic filtering
+- Time Series Analysis
+- Forecast Analysis using Power BI's Forecasting tool
+- DAX Queries for:
+  - Calculated Columns
+  - Calculated Measures (SUM, AVERAGE, COUNT, etc.)
+  - Time Intelligence Functions (like TOTALYTD, SAMEPERIODLASTYEAR)
+- Conditional Formatting
+- Drillthrough and Tooltip Pages
+- Data Modelling (Relationships between tables)
