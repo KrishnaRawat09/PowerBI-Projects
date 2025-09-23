@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharatfincare - Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional admin styles that extend the existing dashboard styles */
+        .admin-overlay {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-3));
+            padding: var(--space-20);
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: var(--space-32);
+            padding-bottom: var(--space-20);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .admin-title {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+        }
+
+        .admin-subtitle {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-lg);
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-teams-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-32);
+            margin-bottom: var(--space-32);
+        }
+
+        @media (max-width: 768px) {
+            .admin-teams-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-20);
+            }
+        }
+
+        /* Use existing team-card class with admin modifications */
+        .admin-team-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-card-border);
+        }
+
+        .admin-team-card[data-team="eli"] {
+            border-left: 4px solid #2563eb;
+        }
+
+        .admin-team-card[data-team="nbl"] {
+            border-left: 4px solid #14b8a6;
+        }
+
+        .admin-input-section {
+            margin-bottom: var(--space-20);
+        }
+
+        .admin-input-section .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+            margin-bottom: var(--space-6);
+        }
+
+        .admin-controls {
+            text-align: center;
+            padding-top: var(--space-24);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .admin-button-group {
+            display: flex;
+            gap: var(--space-16);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--space-20);
+        }
+
+        .preview-link {
+            display: inline-block;
+            padding: var(--space-8) var(--space-16);
+            background: var(--color-secondary);
+            color: var(--color-text);
+            text-decoration: none;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .preview-link:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .live-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: var(--space-8) var(--space-12);
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-overlay">
+        <div class="admin-container">
+            <!-- Header using existing dashboard header styles -->
+            <header class="admin-header">
+                <div class="company-logo">
+                        <img src="logo-2.png" alt="Bharatfincare Logo" style="width: 20%; height: 20%; object-fit: contain;">
+                    </div>
+                </div>
+                <h1 class="admin-title">Admin Dashboard</h1>
+                <p class="admin-subtitle">Update dashboard values - Changes will appear live on main dashboard</p>
+            </header>
+
+            <!-- Teams Grid using existing styles -->
+            <div class="admin-teams-grid">
+                <!-- ELI Team Card -->
+                <div class="admin-team-card" data-team="eli">
+                    <div class="team-header">
+                        <h2 class="team-name">ELI Team</h2>
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-eli-fresh-input">Fresh Leads Count</label>
+                        <input type="number" id="admin-eli-fresh-input" class="form-control" placeholder="e.g., 25" min="0">
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-eli-amount-input">Total Amount (₹)</label>
+                        <input type="text" id="admin-eli-amount-input" class="form-control" placeholder="e.g., 2500000" inputmode="numeric">
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-eli-disbursement-input">Disbursed Amount (₹)</label>
+                        <input type="text" id="admin-eli-disbursement-input" class="form-control" placeholder="e.g., 3500000" inputmode="numeric">
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-eli-collection-input">Collected Amount (₹)</label>
+                        <input type="text" id="admin-eli-collection-input" class="form-control" placeholder="e.g., 4000000" inputmode="numeric">
+                    </div>
+                </div>
+
+                <!-- NBL Team Card -->
+                <div class="admin-team-card" data-team="nbl">
+                    <div class="team-header">
+                        <h2 class="team-name">NBL Team</h2>
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-nbl-fresh-input">Fresh Leads Count</label>
+                        <input type="number" id="admin-nbl-fresh-input" class="form-control" placeholder="e.g., 30" min="0">
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-nbl-amount-input">Total Amount (₹)</label>
+                        <input type="text" id="admin-nbl-amount-input" class="form-control" placeholder="e.g., 3000000" inputmode="numeric">
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-nbl-disbursement-input">Disbursed Amount (₹)</label>
+                        <input type="text" id="admin-nbl-disbursement-input" class="form-control" placeholder="e.g., 3800000" inputmode="numeric">
+                    </div>
+
+                    <div class="admin-input-section">
+                        <label class="form-label" for="admin-nbl-collection-input">Collected Amount (₹)</label>
+                        <input type="text" id="admin-nbl-collection-input" class="form-control" placeholder="e.g., 4500000" inputmode="numeric">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Section -->
+            <div class="admin-controls">
+                <div class="admin-button-group">
+                    <button id="admin-update-btn" class="btn btn--primary btn--lg">
+                        <span class="button-text">Update Dashboard</span>
+                        <span class="loading-spinner hidden"></span>
+                    </button>
+                    <button id="admin-reset-btn" class="btn btn--secondary btn--lg">
+                        Reset All Values
+                    </button>
+                </div>
+                <a href="index_display.html" class="preview-link" target="_blank">
+                    📊 View Main Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Live Status Indicator -->
+        <div class="live-status">
+            <div class="live-indicator"></div>
+            <span>Live Connected</span>
+        </div>
+    </div>
+
+    <script>
+        class AdminDashboard {
+            constructor() {
+                this.initializeElements();
+                this.bindEvents();
+                this.loadCurrentValues();
+                this.setupLiveConnection();
+            }
+
+            initializeElements() {
+                // ELI Admin inputs
+                this.adminEliFreshInputEl = document.getElementById('admin-eli-fresh-input');
+                this.adminEliAmountInputEl = document.getElementById('admin-eli-amount-input');
+                this.adminEliDisbursementInputEl = document.getElementById('admin-eli-disbursement-input');
+                this.adminEliCollectionInputEl = document.getElementById('admin-eli-collection-input');
+
+                // NBL Admin inputs
+                this.adminNblFreshInputEl = document.getElementById('admin-nbl-fresh-input');
+                this.adminNblAmountInputEl = document.getElementById('admin-nbl-amount-input');
+                this.adminNblDisbursementInputEl = document.getElementById('admin-nbl-disbursement-input');
+                this.adminNblCollectionInputEl = document.getElementById('admin-nbl-collection-input');
+
+                // Control elements
+                this.adminUpdateBtnEl = document.getElementById('admin-update-btn');
+                this.adminResetBtnEl = document.getElementById('admin-reset-btn');
+            }
+
+            setupLiveConnection() {
+                // Setup live connection using BroadcastChannel API for real-time updates
+                this.broadcastChannel = new BroadcastChannel('bharatfincare-updates');
+            }
+
+            bindEvents() {
+                this.adminUpdateBtnEl.addEventListener('click', () => this.updateDashboard());
+                this.adminResetBtnEl.addEventListener('click', () => this.resetDashboard());
+
+                // Enter key support and real-time validation
+                const inputs = [
+                    this.adminEliFreshInputEl, this.adminEliAmountInputEl, 
+                    this.adminEliDisbursementInputEl, this.adminEliCollectionInputEl,
+                    this.adminNblFreshInputEl, this.adminNblAmountInputEl,
+                    this.adminNblDisbursementInputEl, this.adminNblCollectionInputEl
+                ];
+
+                inputs.forEach(input => {
+                    if (input) {
+                        input.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                this.updateDashboard();
+                            }
+                        });
+
+                        // Allow only numeric input for currency fields
+                        if (input.inputMode === 'numeric' || input.type === 'number') {
+                            input.addEventListener('input', (e) => {
+                                let value = e.target.value;
+                                if (input.type !== 'number') {
+                                    value = value.replace(/[^0-9]/g, '');
+                                    e.target.value = value;
+                                }
+                                // Remove error class if valid
+                                e.target.classList.remove('input-error');
+                            });
+                        }
+
+                        // Select all text on focus
+                        input.addEventListener('focus', () => {
+                            input.select();
+                        });
+                    }
+                });
+            }
+
+            loadCurrentValues() {
+                const savedData = localStorage.getItem('bharatfincareData');
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+
+                        // Load ELI values
+                        if (data.teams && data.teams.eli) {
+                            this.adminEliFreshInputEl.value = data.teams.eli.freshLeads || '';
+                            this.adminEliAmountInputEl.value = data.teams.eli.totalAmount || '';
+                            this.adminEliDisbursementInputEl.value = data.teams.eli.disbursed || '';
+                            this.adminEliCollectionInputEl.value = data.teams.eli.collected || '';
+                        }
+
+                        // Load NBL values
+                        if (data.teams && data.teams.nbl) {
+                            this.adminNblFreshInputEl.value = data.teams.nbl.freshLeads || '';
+                            this.adminNblAmountInputEl.value = data.teams.nbl.totalAmount || '';
+                            this.adminNblDisbursementInputEl.value = data.teams.nbl.disbursed || '';
+                            this.adminNblCollectionInputEl.value = data.teams.nbl.collected || '';
+                        }
+                    } catch (e) {
+                        console.error('Error loading saved data:', e);
+                    }
+                }
+            }
+
+            async updateDashboard() {
+                const eliDisbursed = parseInt(this.adminEliDisbursementInputEl.value) || 0;
+                const eliCollected = parseInt(this.adminEliCollectionInputEl.value) || 0;
+                const eliFresh = parseInt(this.adminEliFreshInputEl.value) || 0;
+                const eliAmount = parseInt(this.adminEliAmountInputEl.value) || 0;
+
+                const nblDisbursed = parseInt(this.adminNblDisbursementInputEl.value) || 0;
+                const nblCollected = parseInt(this.adminNblCollectionInputEl.value) || 0;
+                const nblFresh = parseInt(this.adminNblFreshInputEl.value) || 0;
+                const nblAmount = parseInt(this.adminNblAmountInputEl.value) || 0;
+
+                this.setLoadingState(true);
+
+                // Create data object to save
+                const dashboardData = {
+                    combinedTarget: 95500000,
+                    teams: {
+                        eli: {
+                            name: 'ELI',
+                            disbursementTarget: 45500000,
+                            collectionTarget: 46955310,
+                            disbursed: eliDisbursed,
+                            collected: eliCollected,
+                            freshLeads: eliFresh,
+                            totalAmount: eliAmount
+                        },
+                        nbl: {
+                            name: 'NBL',
+                            disbursementTarget: 50000000,
+                            collectionTarget: 51989851,
+                            disbursed: nblDisbursed,
+                            collected: nblCollected,
+                            freshLeads: nblFresh,
+                            totalAmount: nblAmount
+                        }
+                    },
+                    lastUpdated: Date.now()
+                };
+
+                // Save to localStorage
+                localStorage.setItem('bharatfincareData', JSON.stringify(dashboardData));
+
+                // Broadcast update to all open tabs/windows
+                this.broadcastChannel.postMessage({
+                    type: 'admin-update',
+                    data: dashboardData
+                });
+
+                // Trigger storage event for cross-tab communication
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'bharatfincareData',
+                    newValue: JSON.stringify(dashboardData)
+                }));
+
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                this.setLoadingState(false);
+                this.showNotification('Dashboard updated successfully! Changes are now live on main dashboard.', 'success');
+            }
+
+            resetDashboard() {
+                // Clear all inputs
+                [this.adminEliFreshInputEl, this.adminEliAmountInputEl, this.adminEliDisbursementInputEl, this.adminEliCollectionInputEl,
+                 this.adminNblFreshInputEl, this.adminNblAmountInputEl, this.adminNblDisbursementInputEl, this.adminNblCollectionInputEl]
+                .forEach(input => input.value = '');
+
+                // Clear localStorage
+                localStorage.removeItem('bharatfincareData');
+
+                // Broadcast reset to all open tabs
+                this.broadcastChannel.postMessage({
+                    type: 'admin-reset'
+                });
+
+                this.showNotification('All values reset successfully!', 'success');
+            }
+
+            setLoadingState(loading) {
+                const buttonText = this.adminUpdateBtnEl.querySelector('.button-text');
+                const spinner = this.adminUpdateBtnEl.querySelector('.loading-spinner');
+
+                if (loading) {
+                    this.adminUpdateBtnEl.disabled = true;
+                    this.adminUpdateBtnEl.classList.add('loading');
+                    if (spinner) spinner.classList.remove('hidden');
+                    if (buttonText) buttonText.textContent = 'Updating...';
+                } else {
+                    this.adminUpdateBtnEl.disabled = false;
+                    this.adminUpdateBtnEl.classList.remove('loading');
+                    if (spinner) spinner.classList.add('hidden');
+                    if (buttonText) buttonText.textContent = 'Update Dashboard';
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                // Create notification element using existing notification styles
+                const notification = document.createElement('div');
+                notification.className = `notification notification--${type}`;
+                notification.textContent = message;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => notification.classList.add('show'), 100);
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 4000);
+            }
+        }
+
+        // Initialize the admin dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminDashboard();
+        });
+    </script>
+</body>
+</html>
