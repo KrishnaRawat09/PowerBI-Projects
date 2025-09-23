@@ -1,0 +1,481 @@
+# 2. ADMIN DASHBOARD CSS
+admin_css_complete = '''/* Admin Dashboard Styles */
+:root {
+    --primary-color: #2c5aa0;
+    --secondary-color: #34495e;
+    --success-color: #27ae60;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --background: #f8f9fa;
+    --surface: #ffffff;
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --border: #dee2e6;
+    --eli-color: #3498db;
+    --nbl-color: #1abc9c;
+    --shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+/* Header */
+.admin-header {
+    background: var(--surface);
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.admin-header .logo {
+    max-height: 50px;
+    width: auto;
+}
+
+.admin-header h1 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--success-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.status-indicator.connected {
+    background: var(--success-color);
+}
+
+/* Container */
+.admin-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+/* Control Panels */
+.control-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.control-panel {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.control-panel:hover {
+    transform: translateY(-2px);
+}
+
+.eli-panel {
+    border-left: 4px solid var(--eli-color);
+}
+
+.nbl-panel {
+    border-left: 4px solid var(--nbl-color);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.panel-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: var(--background);
+    color: var(--text-secondary);
+}
+
+.panel-status.updated {
+    background: #d4edda;
+    color: #155724;
+}
+
+.panel-status.reset {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Control Grid */
+.control-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-item label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.control-item input {
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background: var(--surface);
+}
+
+.control-item input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.control-item input.error {
+    border-color: var(--error-color);
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.input-with-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-with-buttons input {
+    flex: 1;
+    text-align: center;
+}
+
+.btn-adjust {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-adjust:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.target-info {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn--primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn--primary:hover {
+    background: #1e4080;
+    transform: translateY(-1px);
+}
+
+.btn--secondary {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.btn--secondary:hover {
+    background: #2c3e50;
+}
+
+.btn--success {
+    background: var(--success-color);
+    color: white;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+}
+
+.btn--success:hover {
+    background: #219a52;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+.btn--outline {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn--outline:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn--sample {
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 2px solid var(--border);
+    flex-direction: column;
+    padding: 1rem;
+    text-align: center;
+    min-height: 80px;
+}
+
+.btn--sample:hover {
+    border-color: var(--primary-color);
+    background: #f8f9ff;
+}
+
+.btn--sample small {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.btn--lg {
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+}
+
+.panel-update {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Bulk Update Section */
+.bulk-update-section {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.bulk-update-section h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.sample-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Activity Log */
+.activity-log {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.activity-log h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.log-container {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem;
+    background: var(--background);
+}
+
+.log-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.log-item:last-child {
+    border-bottom: none;
+}
+
+.log-time {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.log-message {
+    color: var(--text-primary);
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification--success {
+    background: var(--success-color);
+}
+
+.notification--error {
+    background: var(--error-color);
+}
+
+.notification--warning {
+    background: var(--warning-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 0 1rem;
+    }
+    
+    .admin-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .control-panels {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .control-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sample-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Animation Classes */
+.update-animate {
+    animation: updatePulse 0.5s ease-in-out;
+}
+
+@keyframes updatePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Loading State */
+.btn.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.btn.loading:hover {
+    transform: none;
+}'''
+
+# Save admin CSS
+with open('admin_style_complete.css', 'w', encoding='utf-8') as f:
+    f.write(admin_css_complete)
+
+print("✅ 2. Admin Dashboard CSS created: admin_style_complete.css")
