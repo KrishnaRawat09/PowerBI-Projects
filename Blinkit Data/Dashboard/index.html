@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharatfincare - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Hide all input fields, buttons and controls for display-only mode */
+        .input-group,
+        .controls-section,
+        .sample-data,
+        input[type="number"],
+        input[type="text"],
+        .btn,
+        button,
+        .form-control {
+            display: none !important;
+        }
+
+        /* Ensure display elements remain visible */
+        .metric-display,
+        .current-value,
+        .target-value,
+        .progress-bar,
+        .progress-fill,
+        .progress-percentage,
+        .team-card,
+        .combined-target-card,
+        .summary-section {
+            display: block !important;
+        }
+
+        /* Live update indicators */
+        .live-update-indicator {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: var(--space-8) var(--space-12);
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .update-pulse {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .last-updated {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: var(--space-6) var(--space-12);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-xs);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Animation for data updates */
+        .updating {
+            animation: dataUpdate 0.5s ease-in-out;
+        }
+
+        @keyframes dataUpdate {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Live Update Indicator -->
+    <div class="live-update-indicator">
+        <div class="update-pulse"></div>
+        <span id="live-status">Live Dashboard</span>
+    </div>
+
+    <!-- Last Updated Time -->
+    <div class="last-updated" id="last-updated">
+        Last updated: Loading...
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="company-logo">
+                        <img src="logo-2.png" alt="Bharatfincare Logo">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Combined Target Section -->
+        <section class="combined-target-section">
+            <div class="combined-target-card">
+                <h2 class="combined-title">Disbursement Target</h2>
+                <div class="combined-target-display">
+                    <div class="target-amount" id="combined-target">₹9,55,00,000</div>
+                    <div class="target-label">Total Target</div>
+                </div>
+                <div class="combined-current-display">
+                    <div class="current-amount" id="combined-current">₹0</div>
+                    <div class="current-label">Current Disbursed</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill combined-progress" id="combined-progress" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-percentage" id="combined-percentage">0%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="summary-section">
+            <div class="summary-cards">
+                <div class="summary-card fresh-leads">
+                    <h3>Fresh Leads Today</h3>
+                    <div class="summary-value" id="total-fresh-leads">0</div>
+                    <div class="summary-breakdown">
+                        <span>ELI: <strong id="eli-fresh-display">0</strong></span>
+                        <span>NBL: <strong id="nbl-fresh-display">0</strong></span>
+                    </div>
+                </div>
+                <div class="summary-card total-amount">
+                    <h3>Total Amount Today</h3>
+                    <div class="summary-value" id="total-amount-summary">₹0</div>
+                    <div class="summary-breakdown">
+                        <span>ELI: <strong id="eli-amount-display">₹0</strong></span>
+                        <span>NBL: <strong id="nbl-amount-display">₹0</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teams Container -->
+        <div class="teams-container">
+            <!-- ELI Team -->
+            <div class="team-card" data-team="eli">
+                <div class="team-header">
+                    <h2 class="team-name">ELI</h2>
+                    <div class="team-status leading">Active</div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Fresh Leads</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="eli-fresh-leads">0</div>
+                        <div class="target-value">Today's Count</div>
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Total Amount</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="eli-total-amount">₹0</div>
+                        <div class="target-value">Fresh Leads Count</div>
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Disbursement</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="eli-disbursed">₹0</div>
+                        <div class="target-value">Target: ₹4,55,00,000</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill eli-disbursement-progress" id="eli-disbursement-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-percentage" id="eli-disbursement-percentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Collection</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="eli-collected">₹0</div>
+                        <div class="target-value">Target: ₹4,69,55,310</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill eli-collection-progress" id="eli-collection-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-percentage" id="eli-collection-percentage">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NBL Team -->
+            <div class="team-card" data-team="nbl">
+                <div class="team-header">
+                    <h2 class="team-name">NBL</h2>
+                    <div class="team-status leading">Active</div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Fresh Leads</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="nbl-fresh-leads">0</div>
+                        <div class="target-value">Today's Count</div>
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Total Amount</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="nbl-total-amount">₹0</div>
+                        <div class="target-value">Fresh Leads Count</div>
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Disbursement</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="nbl-disbursed">₹0</div>
+                        <div class="target-value">Target: ₹5,00,00,000</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill nbl-disbursement-progress" id="nbl-disbursement-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-percentage" id="nbl-disbursement-percentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="metric-section">
+                    <h4>Collection</h4>
+                    <div class="metric-display">
+                        <div class="current-value" id="nbl-collected">₹0</div>
+                        <div class="target-value">Target: ₹5,19,89,851</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill nbl-collection-progress" id="nbl-collection-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-percentage" id="nbl-collection-percentage">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class LiveDashboard {
+            constructor() {
+                this.data = {
+                    combinedTarget: 95500000,
+                    teams: {
+                        eli: {
+                            name: 'ELI',
+                            disbursementTarget: 45500000,
+                            collectionTarget: 46955310,
+                            disbursed: 0,
+                            collected: 0,
+                            freshLeads: 0,
+                            totalAmount: 0
+                        },
+                        nbl: {
+                            name: 'NBL',
+                            disbursementTarget: 50000000,
+                            collectionTarget: 51989851,
+                            disbursed: 0,
+                            collected: 0,
+                            freshLeads: 0,
+                            totalAmount: 0
+                        }
+                    }
+                };
+
+                this.initializeElements();
+                this.setupLiveConnection();
+                this.loadData();
+                this.updateDisplay();
+                this.updateSummary();
+                this.updateLastUpdated();
+            }
+
+            initializeElements() {
+                // Combined target elements
+                this.combinedCurrentEl = document.getElementById('combined-current');
+                this.combinedProgressEl = document.getElementById('combined-progress');
+                this.combinedPercentageEl = document.getElementById('combined-percentage');
+
+                // Summary elements
+                this.totalFreshLeadsEl = document.getElementById('total-fresh-leads');
+                this.totalAmountSummaryEl = document.getElementById('total-amount-summary');
+                this.eliFreshDisplayEl = document.getElementById('eli-fresh-display');
+                this.nblFreshDisplayEl = document.getElementById('nbl-fresh-display');
+                this.eliAmountDisplayEl = document.getElementById('eli-amount-display');
+                this.nblAmountDisplayEl = document.getElementById('nbl-amount-display');
+
+                // Team elements
+                this.eliFreshLeadsEl = document.getElementById('eli-fresh-leads');
+                this.eliTotalAmountEl = document.getElementById('eli-total-amount');
+                this.eliDisbursedEl = document.getElementById('eli-disbursed');
+                this.eliCollectedEl = document.getElementById('eli-collected');
+                this.eliDisbursementPercentageEl = document.getElementById('eli-disbursement-percentage');
+                this.eliCollectionPercentageEl = document.getElementById('eli-collection-percentage');
+                this.eliDisbursementProgressEl = document.getElementById('eli-disbursement-progress');
+                this.eliCollectionProgressEl = document.getElementById('eli-collection-progress');
+
+                this.nblFreshLeadsEl = document.getElementById('nbl-fresh-leads');
+                this.nblTotalAmountEl = document.getElementById('nbl-total-amount');
+                this.nblDisbursedEl = document.getElementById('nbl-disbursed');
+                this.nblCollectedEl = document.getElementById('nbl-collected');
+                this.nblDisbursementPercentageEl = document.getElementById('nbl-disbursement-percentage');
+                this.nblCollectionPercentageEl = document.getElementById('nbl-collection-percentage');
+                this.nblDisbursementProgressEl = document.getElementById('nbl-disbursement-progress');
+                this.nblCollectionProgressEl = document.getElementById('nbl-collection-progress');
+
+                // Status elements
+                this.liveStatusEl = document.getElementById('live-status');
+                this.lastUpdatedEl = document.getElementById('last-updated');
+            }
+
+            setupLiveConnection() {
+                // BroadcastChannel for real-time updates
+                this.broadcastChannel = new BroadcastChannel('bharatfincare-updates');
+
+                this.broadcastChannel.addEventListener('message', (event) => {
+                    if (event.data.type === 'admin-update') {
+                        this.handleLiveUpdate(event.data.data);
+                    } else if (event.data.type === 'admin-reset') {
+                        this.handleLiveReset();
+                    }
+                });
+
+                // Storage event listener for cross-tab updates
+                window.addEventListener('storage', (event) => {
+                    if (event.key === 'bharatfincareData') {
+                        if (event.newValue) {
+                            const newData = JSON.parse(event.newValue);
+                            this.handleLiveUpdate(newData);
+                        } else {
+                            this.handleLiveReset();
+                        }
+                    }
+                });
+
+                // Check for updates every 2 seconds as fallback
+                setInterval(() => {
+                    this.checkForUpdates();
+                }, 2000);
+            }
+
+            handleLiveUpdate(newData) {
+                this.data = { ...newData };
+                this.showUpdateIndicator();
+                this.updateDisplay();
+                this.updateSummary();
+                this.updateLastUpdated(newData.lastUpdated);
+                this.animateUpdate();
+            }
+
+            handleLiveReset() {
+                // Reset to default values
+                this.data.teams.eli = {
+                    name: 'ELI', disbursementTarget: 45500000, collectionTarget: 46955310,
+                    disbursed: 0, collected: 0, freshLeads: 0, totalAmount: 0
+                };
+                this.data.teams.nbl = {
+                    name: 'NBL', disbursementTarget: 50000000, collectionTarget: 51989851,
+                    disbursed: 0, collected: 0, freshLeads: 0, totalAmount: 0
+                };
+
+                this.showUpdateIndicator();
+                this.updateDisplay();
+                this.updateSummary();
+                this.updateLastUpdated();
+                this.animateUpdate();
+            }
+
+            checkForUpdates() {
+                const savedData = localStorage.getItem('bharatfincareData');
+                if (savedData) {
+                    try {
+                        const newData = JSON.parse(savedData);
+                        if (JSON.stringify(newData.teams) !== JSON.stringify(this.data.teams)) {
+                            this.handleLiveUpdate(newData);
+                        }
+                    } catch (e) {
+                        console.error('Error checking for updates:', e);
+                    }
+                }
+            }
+
+            showUpdateIndicator() {
+                this.liveStatusEl.textContent = 'Updating...';
+                setTimeout(() => {
+                    this.liveStatusEl.textContent = 'Live Dashboard';
+                }, 1500);
+            }
+
+            animateUpdate() {
+                // Add update animation to all metric sections
+                const metricCards = document.querySelectorAll('.metric-section, .summary-card, .combined-target-card');
+                metricCards.forEach(card => {
+                    card.classList.add('updating');
+                    setTimeout(() => {
+                        card.classList.remove('updating');
+                    }, 500);
+                });
+            }
+
+            updateLastUpdated(timestamp = null) {
+                const now = timestamp ? new Date(timestamp) : new Date();
+                const timeString = now.toLocaleTimeString();
+                this.lastUpdatedEl.textContent = `Last updated: ${timeString}`;
+            }
+
+            loadData() {
+                const savedData = localStorage.getItem('bharatfincareData');
+                if (savedData) {
+                    try {
+                        const loadedData = JSON.parse(savedData);
+                        if (loadedData && loadedData.teams) {
+                            this.data.teams.eli = { ...this.data.teams.eli, ...loadedData.teams.eli };
+                            this.data.teams.nbl = { ...this.data.teams.nbl, ...loadedData.teams.nbl };
+                        }
+                    } catch (e) {
+                        console.error('Error loading saved data:', e);
+                    }
+                }
+            }
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(amount);
+            }
+
+            updateDisplay() {
+                const eli = this.data.teams.eli;
+                const nbl = this.data.teams.nbl;
+
+                // Update ELI metrics
+                if (this.eliFreshLeadsEl) this.eliFreshLeadsEl.textContent = eli.freshLeads.toLocaleString();
+                if (this.eliTotalAmountEl) this.eliTotalAmountEl.textContent = this.formatCurrency(eli.totalAmount);
+                if (this.eliDisbursedEl) this.eliDisbursedEl.textContent = this.formatCurrency(eli.disbursed);
+                if (this.eliCollectedEl) this.eliCollectedEl.textContent = this.formatCurrency(eli.collected);
+
+                // Update NBL metrics
+                if (this.nblFreshLeadsEl) this.nblFreshLeadsEl.textContent = nbl.freshLeads.toLocaleString();
+                if (this.nblTotalAmountEl) this.nblTotalAmountEl.textContent = this.formatCurrency(nbl.totalAmount);
+                if (this.nblDisbursedEl) this.nblDisbursedEl.textContent = this.formatCurrency(nbl.disbursed);
+                if (this.nblCollectedEl) this.nblCollectedEl.textContent = this.formatCurrency(nbl.collected);
+
+                // Update percentages and progress bars
+                const eliDisbursementPercentage = Math.min((eli.disbursed / eli.disbursementTarget) * 100, 100);
+                const eliCollectionPercentage = Math.min((eli.collected / eli.collectionTarget) * 100, 100);
+                const nblDisbursementPercentage = Math.min((nbl.disbursed / nbl.disbursementTarget) * 100, 100);
+                const nblCollectionPercentage = Math.min((nbl.collected / nbl.collectionTarget) * 100, 100);
+
+                if (this.eliDisbursementPercentageEl) this.eliDisbursementPercentageEl.textContent = `${eliDisbursementPercentage.toFixed(1)}%`;
+                if (this.eliCollectionPercentageEl) this.eliCollectionPercentageEl.textContent = `${eliCollectionPercentage.toFixed(1)}%`;
+                if (this.nblDisbursementPercentageEl) this.nblDisbursementPercentageEl.textContent = `${nblDisbursementPercentage.toFixed(1)}%`;
+                if (this.nblCollectionPercentageEl) this.nblCollectionPercentageEl.textContent = `${nblCollectionPercentage.toFixed(1)}%`;
+
+                if (this.eliDisbursementProgressEl) this.eliDisbursementProgressEl.style.width = `${eliDisbursementPercentage}%`;
+                if (this.eliCollectionProgressEl) this.eliCollectionProgressEl.style.width = `${eliCollectionPercentage}%`;
+                if (this.nblDisbursementProgressEl) this.nblDisbursementProgressEl.style.width = `${nblDisbursementPercentage}%`;
+                if (this.nblCollectionProgressEl) this.nblCollectionProgressEl.style.width = `${nblCollectionPercentage}%`;
+            }
+
+            updateSummary() {
+                const totalDisbursed = this.data.teams.eli.disbursed + this.data.teams.nbl.disbursed;
+                const totalFreshLeads = this.data.teams.eli.freshLeads + this.data.teams.nbl.freshLeads;
+                const totalAmount = this.data.teams.eli.totalAmount + this.data.teams.nbl.totalAmount;
+
+                // Update combined values
+                if (this.combinedCurrentEl) this.combinedCurrentEl.textContent = this.formatCurrency(totalDisbursed);
+                if (this.totalFreshLeadsEl) this.totalFreshLeadsEl.textContent = totalFreshLeads.toLocaleString();
+                if (this.totalAmountSummaryEl) this.totalAmountSummaryEl.textContent = this.formatCurrency(totalAmount);
+
+                // Update breakdown displays
+                if (this.eliFreshDisplayEl) this.eliFreshDisplayEl.textContent = this.data.teams.eli.freshLeads.toLocaleString();
+                if (this.nblFreshDisplayEl) this.nblFreshDisplayEl.textContent = this.data.teams.nbl.freshLeads.toLocaleString();
+                if (this.eliAmountDisplayEl) this.eliAmountDisplayEl.textContent = this.formatCurrency(this.data.teams.eli.totalAmount);
+                if (this.nblAmountDisplayEl) this.nblAmountDisplayEl.textContent = this.formatCurrency(this.data.teams.nbl.totalAmount);
+
+                // Update combined progress
+                const combinedPercentage = Math.min((totalDisbursed / this.data.combinedTarget) * 100, 100);
+                if (this.combinedPercentageEl) this.combinedPercentageEl.textContent = `${combinedPercentage.toFixed(1)}%`;
+                if (this.combinedProgressEl) this.combinedProgressEl.style.width = `${combinedPercentage}%`;
+            }
+        }
+
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new LiveDashboard();
+        });
+    </script>
+</body>
+</html>
