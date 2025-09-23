@@ -1,0 +1,209 @@
+# 4. DISPLAY DASHBOARD HTML - Complete with full numbers
+display_html_complete = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BharatFincare - Live Display Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="display_style_complete.css">
+</head>
+<body>
+    <div class="display-container">
+        <!-- Compact Header -->
+        <div class="display-header">
+            <img src="logo-2.jpg" alt="BharatFincare Logo" class="logo">
+            <div class="header-info">
+                <div class="live-indicator">
+                    <span class="pulse-dot"></span>
+                    <span>LIVE</span>
+                </div>
+                <div class="last-updated" id="last-updated">Last Updated: --:--:--</div>
+            </div>
+        </div>
+
+        <!-- Compact Display Grid - 4 Boxes -->
+        <div class="display-grid">
+            <!-- Box 1: Overall Progress -->
+            <div class="display-box progress-box">
+                <div class="box-header">
+                    <h2>Overall Progress</h2>
+                    <div class="target-info">Target: ₹9,55,00,000</div>
+                </div>
+                <div class="progress-content">
+                    <div class="circular-progress" id="circular-progress">
+                        <svg class="progress-ring" width="140" height="140">
+                            <circle class="progress-ring__circle" stroke="#e0e0e0" stroke-width="6" fill="transparent" r="62" cx="70" cy="70"/>
+                            <circle class="progress-ring__progress" stroke="#4CAF50" stroke-width="6" fill="transparent" r="62" cx="70" cy="70" id="progress-circle"/>
+                        </svg>
+                        <div class="progress-text">
+                            <span class="progress-percentage" id="overall-percentage">0%</span>
+                            <span class="progress-amount" id="overall-amount">₹0</span>
+                        </div>
+                    </div>
+                    <div class="remaining-info">
+                        <span id="remaining-amount">₹9,55,00,000 remaining</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box 2: Team Performance -->
+            <div class="display-box teams-box">
+                <div class="box-header">
+                    <h2>Team Performance</h2>
+                </div>
+                <div class="teams-content">
+                    <div class="team-section eli-section">
+                        <div class="team-header">
+                            <div class="team-name">ELI</div>
+                            <div class="team-status" id="eli-status">--</div>
+                        </div>
+                        
+                        <div class="metrics-compact">
+                            <div class="metric-row">
+                                <div class="metric-info">
+                                    <span class="metric-label">Disbursement</span>
+                                    <span class="metric-target">/ ₹4,55,00,000</span>
+                                </div>
+                                <div class="metric-values">
+                                    <span class="metric-value" id="eli-disbursement-value">₹0</span>
+                                    <span class="metric-percentage" id="eli-disbursement-percentage">0%</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill eli-disbursement" id="eli-disbursement-bar"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-row">
+                                <div class="metric-info">
+                                    <span class="metric-label">Collection</span>
+                                    <span class="metric-target">/ ₹4,69,55,310</span>
+                                </div>
+                                <div class="metric-values">
+                                    <span class="metric-value" id="eli-collection-value">₹0</span>
+                                    <span class="metric-percentage" id="eli-collection-percentage">0%</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill eli-collection" id="eli-collection-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vs-divider">VS</div>
+
+                    <div class="team-section nbl-section">
+                        <div class="team-header">
+                            <div class="team-name">NBL</div>
+                            <div class="team-status" id="nbl-status">--</div>
+                        </div>
+                        
+                        <div class="metrics-compact">
+                            <div class="metric-row">
+                                <div class="metric-info">
+                                    <span class="metric-label">Disbursement</span>
+                                    <span class="metric-target">/ ₹5,00,00,000</span>
+                                </div>
+                                <div class="metric-values">
+                                    <span class="metric-value" id="nbl-disbursement-value">₹0</span>
+                                    <span class="metric-percentage" id="nbl-disbursement-percentage">0%</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill nbl-disbursement" id="nbl-disbursement-bar"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-row">
+                                <div class="metric-info">
+                                    <span class="metric-label">Collection</span>
+                                    <span class="metric-target">/ ₹5,19,89,851</span>
+                                </div>
+                                <div class="metric-values">
+                                    <span class="metric-value" id="nbl-collection-value">₹0</span>
+                                    <span class="metric-percentage" id="nbl-collection-percentage">0%</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill nbl-collection" id="nbl-collection-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box 3: Fresh Leads Today -->
+            <div class="display-box leads-box">
+                <div class="box-header">
+                    <h2>Fresh Leads Today</h2>
+                </div>
+                <div class="leads-content">
+                    <div class="total-display">
+                        <div class="total-number" id="total-leads">0</div>
+                        <div class="total-label">Total Leads</div>
+                    </div>
+                    <div class="breakdown">
+                        <div class="breakdown-item eli-item">
+                            <div class="breakdown-team">ELI</div>
+                            <div class="breakdown-value" id="eli-leads">0</div>
+                            <div class="breakdown-bar">
+                                <div class="breakdown-fill eli-fill" id="eli-lead-fill"></div>
+                            </div>
+                        </div>
+                        <div class="breakdown-item nbl-item">
+                            <div class="breakdown-team">NBL</div>
+                            <div class="breakdown-value" id="nbl-leads">0</div>
+                            <div class="breakdown-bar">
+                                <div class="breakdown-fill nbl-fill" id="nbl-lead-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box 4: Daily Amounts -->
+            <div class="display-box amounts-box">
+                <div class="box-header">
+                    <h2>Daily Amounts</h2>
+                </div>
+                <div class="amounts-content">
+                    <div class="total-display">
+                        <div class="total-number" id="total-daily-amount">₹0</div>
+                        <div class="total-label">Total Today</div>
+                    </div>
+                    <div class="breakdown">
+                        <div class="breakdown-item eli-item">
+                            <div class="breakdown-team">ELI</div>
+                            <div class="breakdown-value" id="eli-daily-amount">₹0</div>
+                            <div class="breakdown-bar">
+                                <div class="breakdown-fill eli-fill" id="eli-amount-fill"></div>
+                            </div>
+                        </div>
+                        <div class="breakdown-item nbl-item">
+                            <div class="breakdown-team">NBL</div>
+                            <div class="breakdown-value" id="nbl-daily-amount">₹0</div>
+                            <div class="breakdown-bar">
+                                <div class="breakdown-fill nbl-fill" id="nbl-amount-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compact Footer -->
+        <div class="display-footer">
+            <span class="connection-status" id="connection-status">Connected</span>
+            <span class="separator">•</span>
+            <span id="update-count">0 updates</span>
+        </div>
+    </div>
+
+    <script src="display_script_complete.js"></script>
+</body>
+</html>'''
+
+# Save display HTML
+with open('display_dashboard_complete.html', 'w', encoding='utf-8') as f:
+    f.write(display_html_complete)
+
+print("✅ 4. Display Dashboard HTML created: display_dashboard_complete.html")
