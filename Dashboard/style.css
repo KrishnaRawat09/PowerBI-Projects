@@ -1293,7 +1293,7 @@ body {
 }
 
 .summary-card h3 {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text);
     margin-bottom: var(--space-16);
@@ -1314,7 +1314,7 @@ body {
     display: flex;
     justify-content: space-around;
     gap: var(--space-16);
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-4xl);
     color: var(--color-text-secondary);
     font-weight: var(--font-weight-medium);
 }
