@@ -3,263 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bharatfincare - Dashboard</title>
+    <title>Bharat Fincare - Live Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Hide all input fields, buttons and controls for display-only mode */
-        .input-group,
-        .controls-section,
-        .sample-data,
-        input[type="number"],
-        input[type="text"],
-        .btn,
-        button,
-        .form-control {
-            display: none !important;
-        }
-
-        /* Ensure display elements remain visible */
-        .metric-display,
-        .current-value,
-        .target-value,
-        .progress-bar,
-        .progress-fill,
-        .progress-percentage,
-        .team-card,
-        .combined-target-card,
-        .summary-section {
-            display: block !important;
-        }
-
-        /* Live update indicators */
-        .live-update-indicator {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: var(--space-8) var(--space-12);
-            background: var(--color-primary);
-            color: var(--color-btn-primary-text);
-            border-radius: var(--radius-full);
-            font-size: var(--font-size-xs);
-            display: flex;
-            align-items: center;
-            gap: var(--space-6);
-            z-index: 1000;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .update-pulse {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .last-updated {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            padding: var(--space-6) var(--space-12);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            border-radius: var(--radius-base);
-            font-size: var(--font-size-xs);
-            backdrop-filter: blur(10px);
-        }
-
-        /* Animation for data updates */
-        .updating {
-            animation: dataUpdate 0.5s ease-in-out;
-        }
-
-        @keyframes dataUpdate {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; transform: scale(0.98); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(1.2); }
-        }
-    </style>
 </head>
 <body>
-    <!-- Live Update Indicator -->
-    <div class="live-update-indicator">
-        <div class="update-pulse"></div>
-        <span id="live-status">Live Dashboard</span>
-    </div>
-
-    <!-- Last Updated Time -->
-    <div class="last-updated" id="last-updated">
-        Last updated: Loading...
-    </div>
-
-    <div class="container">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <div class="header-content">
-                <div class="company-logo">
-                        <img src="logo-2.png" alt="Bharatfincare Logo">
-                    </div>
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="header-wrapper">
+            <div class="header-left">
+                <img src="logo-2.png" alt="Bharat Fincare Logo" class="company-logo">
+                <div class="live-indicator">
+                    <span class="status-dot"></span>
+                    <span id="live-status">Live Dashboard</span>
                 </div>
             </div>
-        </header>
-
-        <!-- Combined Target Section -->
-        <section class="combined-target-section">
-            <div class="combined-target-card">
-                <h2 class="combined-title">Disbursement Target</h2>
-                <div class="combined-target-display">
-                    <div class="target-amount" id="combined-target">₹9,55,00,000</div>
-                    <div class="target-label">Total Target</div>
-                </div>
-                <div class="combined-current-display">
-                    <div class="current-amount" id="combined-current">₹0</div>
-                    <div class="current-label">Current Disbursed</div>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill combined-progress" id="combined-progress" style="width: 0%"></div>
-                    </div>
-                    <div class="progress-percentage" id="combined-percentage">0%</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Summary Section -->
-        <section class="summary-section">
-            <div class="summary-cards">
-                <!-- ELI Daily Target -->
-                <div class="summary-card eli-target">
-                    <h3>ELI Fresh Case</h3>
-                    <div class="summary-breakdown">
-                        <span>Count: <strong id="eli-fresh-display">0</strong></span>
-                        <span>Amount: <strong id="eli-amount-display">₹0</strong></span>
-                    </div>
-                </div>
-
-                <!-- NBL Daily Target -->
-                <div class="summary-card nbl-target">
-                    <h3>NBL Fresh Case</h3>
-                    <div class="summary-breakdown">
-                        <span>Count: <strong id="nbl-fresh-display">0</strong></span>
-                        <span>Amount: <strong id="nbl-amount-display">₹0</strong></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Teams Container -->
-        <div class="teams-container">
-            <!-- ELI Team -->
-            <div class="team-card" data-team="eli">
-                <div class="team-header">
-                    <h2 class="team-name">ELI</h2>
-                    <div class="team-status leading">Active</div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Fresh Leads</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="eli-fresh-leads">0</div>
-                        <div class="target-value">Today's Count</div>
-                    </div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Total Amount</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="eli-total-amount">₹0</div>
-                        <div class="target-value">Fresh Leads Count</div>
-                    </div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Disbursement</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="eli-disbursed">₹0</div>
-                        <div class="target-value">Target: ₹4,55,00,000</div>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill eli-disbursement-progress" id="eli-disbursement-progress" style="width: 0%"></div>
-                        </div>
-                        <div class="progress-percentage" id="eli-disbursement-percentage">0%</div>
-                    </div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Collection</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="eli-collected">₹0</div>
-                        <div class="target-value">Target: ₹4,69,55,310</div>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill eli-collection-progress" id="eli-collection-progress" style="width: 0%"></div>
-                        </div>
-                        <div class="progress-percentage" id="eli-collection-percentage">0%</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- NBL Team -->
-            <div class="team-card" data-team="nbl">
-                <div class="team-header">
-                    <h2 class="team-name">NBL</h2>
-                    <div class="team-status leading">Active</div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Fresh Leads</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="nbl-fresh-leads">0</div>
-                        <div class="target-value">Today's Count</div>
-                    </div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Total Amount</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="nbl-total-amount">₹0</div>
-                        <div class="target-value">Fresh Leads Count</div>
-                    </div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Disbursement</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="nbl-disbursed">₹0</div>
-                        <div class="target-value">Target: ₹5,00,00,000</div>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill nbl-disbursement-progress" id="nbl-disbursement-progress" style="width: 0%"></div>
-                        </div>
-                        <div class="progress-percentage" id="nbl-disbursement-percentage">0%</div>
-                    </div>
-                </div>
-
-                <div class="metric-section">
-                    <h4>Collection</h4>
-                    <div class="metric-display">
-                        <div class="current-value" id="nbl-collected">₹0</div>
-                        <div class="target-value">Target: ₹5,19,89,851</div>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill nbl-collection-progress" id="nbl-collection-progress" style="width: 0%"></div>
-                        </div>
-                        <div class="progress-percentage" id="nbl-collection-percentage">0%</div>
-                    </div>
-                </div>
+            <div class="header-right">
+                <p id="last-updated" class="last-update-text">Last updated: --</p>
             </div>
         </div>
+    </header>
+
+    <div class="container">
+        <!-- Combined Target Section -->
+        <section class="main-target-section">
+            <div class="target-card">
+                <div class="target-item">
+                    <h3>Combined Target</h3>
+                    <p id="combined-target" class="target-value">Loading...</p>
+                </div>
+                <div class="target-divider"></div>
+                <div class="target-item">
+                    <h3>Total Disbursed</h3>
+                    <p id="combined-current" class="target-value">₹0</p>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div id="combined-progress" class="progress-bar"></div>
+            </div>
+            <p class="progress-percentage" id="combined-percentage">0% Achieved</p>
+        </section>
+
+        <!-- Summary Overview -->
+        <section class="summary-section">
+            <h2 class="section-title">Summary Overview</h2>
+            <div class="summary-grid">
+                <!-- ELI Summary -->
+                <div class="summary-card eli-card">
+                    <div class="card-header">
+                        <h3>ELI - Everyday Loan India</h3>
+                        <span class="team-badge eli-badge">ELI</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric-item">
+                            <span class="metric-label">Fresh Cases</span>
+                            <span id="eli-fresh-leads" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric-item">
+                            <span class="metric-label">Total Amount</span>
+                            <span id="eli-total-amount" class="metric-value">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NBL Summary -->
+                <div class="summary-card nbl-card">
+                    <div class="card-header">
+                        <h3>NBL - Next Big Loan</h3>
+                        <span class="team-badge nbl-badge">NBL</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric-item">
+                            <span class="metric-label">Fresh Cases</span>
+                            <span id="nbl-fresh-leads" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric-item">
+                            <span class="metric-label">Total Amount</span>
+                            <span id="nbl-total-amount" class="metric-value">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combined Total -->
+                <div class="summary-card combined-card">
+                    <div class="card-header">
+                        <h3>Combined Total</h3>
+                        <span class="team-badge combined-badge">ALL</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric-item">
+                            <span class="metric-label">Total Cases</span>
+                            <span id="total-fresh-leads" class="metric-value">0</span>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric-item">
+                            <span class="metric-label">Total Amount</span>
+                            <span id="total-amount-summary" class="metric-value">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Metrics -->
+        <section class="detailed-metrics-section">
+            <h2 class="section-title">Detailed Performance</h2>
+            <div class="team-metrics-grid">
+                <!-- ELI Team Details -->
+                <div class="team-detail-card eli-detail">
+                    <div class="team-detail-header">
+                        <h3>ELI Performance</h3>
+                        <p class="target-info">Target: <span id="eli-target-display">Loading...</span></p>
+                    </div>
+                    <div class="detail-metrics">
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Disbursed</span>
+                                <span id="eli-disbursed" class="detail-value">₹0</span>
+                            </div>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar-small">
+                                    <div id="eli-disbursement-progress" class="progress-fill-eli"></div>
+                                </div>
+                                <span id="eli-disbursement-percentage" class="progress-text">0%</span>
+                            </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Collected</span>
+                                <span id="eli-collected" class="detail-value">₹0</span>
+                            </div>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar-small">
+                                    <div id="eli-collection-progress" class="progress-fill-eli"></div>
+                                </div>
+                                <span id="eli-collection-percentage" class="progress-text">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NBL Team Details -->
+                <div class="team-detail-card nbl-detail">
+                    <div class="team-detail-header">
+                        <h3>NBL Performance</h3>
+                        <p class="target-info">Target: <span id="nbl-target-display">Loading...</span></p>
+                    </div>
+                    <div class="detail-metrics">
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Disbursed</span>
+                                <span id="nbl-disbursed" class="detail-value">₹0</span>
+                            </div>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar-small">
+                                    <div id="nbl-disbursement-progress" class="progress-fill-nbl"></div>
+                                </div>
+                                <span id="nbl-disbursement-percentage" class="progress-text">0%</span>
+                            </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Collected</span>
+                                <span id="nbl-collected" class="detail-value">₹0</span>
+                            </div>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar-small">
+                                    <div id="nbl-collection-progress" class="progress-fill-nbl"></div>
+                                </div>
+                                <span id="nbl-collection-percentage" class="progress-text">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
