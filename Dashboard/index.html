@@ -11,175 +11,216 @@
     <header class="dashboard-header">
         <div class="header-wrapper">
             <div class="header-left">
-                <img src="logo-2.png" alt="Bharat Fincare Logo" class="company-logo">
+                <div class="company-logo">
+                    <img src="logo-2.png" alt="Logo" style="width: 100%; height: 100%; border-radius: 4px;">
+                </div>
                 <div class="live-indicator">
                     <span class="status-dot"></span>
-                    <span id="live-status">Live Dashboard</span>
+                    <h1 id="live-status">Live Dashboard</h1>
                 </div>
             </div>
             <div class="header-right">
-                <p id="last-updated" class="last-update-text">Last updated: --</p>
+                <div class="last-update-text">
+                    <div id="last-updated">Last updated: --:-- --</div>
+                    <div id="refresh-interval">Auto-refresh: Every 15s</div>
+                </div>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Combined Target Section -->
+    <main class="container">
+        <!-- Main Target Section -->
         <section class="main-target-section">
             <div class="target-card">
                 <div class="target-item">
-                    <h3>Combined Target</h3>
-                    <p id="combined-target" class="target-value">Loading...</p>
+                    <h3>Current</h3>
+                    <div class="target-value" id="combined-current">₹0</div>
                 </div>
                 <div class="target-divider"></div>
                 <div class="target-item">
-                    <h3>Total Disbursed</h3>
-                    <p id="combined-current" class="target-value">₹0</p>
+                    <h3>Target</h3>
+                    <div class="target-value" id="combined-target">Loading...</div>
                 </div>
             </div>
             <div class="progress-bar-container">
-                <div id="combined-progress" class="progress-bar"></div>
+                <div class="progress-bar" id="combined-progress"></div>
             </div>
-            <p class="progress-percentage" id="combined-percentage">0% Achieved</p>
+            <div class="progress-percentage" id="combined-percentage">0%</div>
         </section>
 
-        <!-- Summary Overview -->
+        <!-- Summary Section -->
         <section class="summary-section">
-            <h2 class="section-title">Summary Overview</h2>
+            <h2 class="section-title">Summary</h2>
             <div class="summary-grid">
-                <!-- ELI Summary -->
+                <!-- Combined Summary Card -->
+                <div class="summary-card combined-card">
+                    <div class="card-header">
+                        <h3>Total Summary</h3>
+                        <span class="team-badge combined-badge">COMBINED</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Fresh Leads</div>
+                            <div class="metric-value" id="total-fresh-leads">0</div>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric-item">
+                            <div class="metric-label">Total Amount</div>
+                            <div class="metric-value" id="total-amount-summary">₹0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ELI Summary Card -->
                 <div class="summary-card eli-card">
                     <div class="card-header">
-                        <h3>ELI - Everyday Loan India</h3>
+                        <h3>ELI Summary</h3>
                         <span class="team-badge eli-badge">ELI</span>
                     </div>
                     <div class="card-metrics">
                         <div class="metric-item">
-                            <span class="metric-label">Fresh Cases</span>
-                            <span id="eli-fresh-leads" class="metric-value">0</span>
+                            <div class="metric-label">Fresh Leads</div>
+                            <div class="metric-value" id="eli-fresh-display">0</div>
                         </div>
                         <div class="metric-divider"></div>
                         <div class="metric-item">
-                            <span class="metric-label">Total Amount</span>
-                            <span id="eli-total-amount" class="metric-value">₹0</span>
+                            <div class="metric-label">Total Amount</div>
+                            <div class="metric-value" id="eli-amount-display">₹0</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- NBL Summary -->
+                <!-- NBL Summary Card -->
                 <div class="summary-card nbl-card">
                     <div class="card-header">
-                        <h3>NBL - Next Big Loan</h3>
+                        <h3>NBL Summary</h3>
                         <span class="team-badge nbl-badge">NBL</span>
                     </div>
                     <div class="card-metrics">
                         <div class="metric-item">
-                            <span class="metric-label">Fresh Cases</span>
-                            <span id="nbl-fresh-leads" class="metric-value">0</span>
+                            <div class="metric-label">Fresh Leads</div>
+                            <div class="metric-value" id="nbl-fresh-display">0</div>
                         </div>
                         <div class="metric-divider"></div>
                         <div class="metric-item">
-                            <span class="metric-label">Total Amount</span>
-                            <span id="nbl-total-amount" class="metric-value">₹0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Combined Total -->
-                <div class="summary-card combined-card">
-                    <div class="card-header">
-                        <h3>Combined Total</h3>
-                        <span class="team-badge combined-badge">ALL</span>
-                    </div>
-                    <div class="card-metrics">
-                        <div class="metric-item">
-                            <span class="metric-label">Total Cases</span>
-                            <span id="total-fresh-leads" class="metric-value">0</span>
-                        </div>
-                        <div class="metric-divider"></div>
-                        <div class="metric-item">
-                            <span class="metric-label">Total Amount</span>
-                            <span id="total-amount-summary" class="metric-value">₹0</span>
+                            <div class="metric-label">Total Amount</div>
+                            <div class="metric-value" id="nbl-amount-display">₹0</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Detailed Metrics -->
+        <!-- Detailed Metrics Section -->
         <section class="detailed-metrics-section">
-            <h2 class="section-title">Detailed Performance</h2>
+            <h2 class="section-title">Detailed Metrics</h2>
             <div class="team-metrics-grid">
-                <!-- ELI Team Details -->
+                <!-- ELI Details -->
                 <div class="team-detail-card eli-detail">
                     <div class="team-detail-header">
                         <h3>ELI Performance</h3>
-                        <p class="target-info">Target: <span id="eli-target-display">Loading...</span></p>
+                        <div class="target-info">Target: <span id="eli-target-display">Loading...</span></div>
                     </div>
                     <div class="detail-metrics">
                         <div class="detail-metric-row">
                             <div class="detail-metric">
-                                <span class="detail-label">Disbursed</span>
-                                <span id="eli-disbursed" class="detail-value">₹0</span>
+                                <span class="detail-label">Fresh Leads</span>
+                                <span class="detail-value" id="eli-fresh-leads">0</span>
                             </div>
-                            <div class="progress-wrapper">
-                                <div class="progress-bar-small">
-                                    <div id="eli-disbursement-progress" class="progress-fill-eli"></div>
-                                </div>
-                                <span id="eli-disbursement-percentage" class="progress-text">0%</span>
+                        </div>
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Total Amount</span>
+                                <span class="detail-value" id="eli-total-amount">₹0</span>
+                            </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Disbursed</span>
+                                <span class="detail-value" id="eli-disbursed">₹0</span>
                             </div>
                         </div>
                         <div class="detail-metric-row">
                             <div class="detail-metric">
                                 <span class="detail-label">Collected</span>
-                                <span id="eli-collected" class="detail-value">₹0</span>
+                                <span class="detail-value" id="eli-collected">₹0</span>
                             </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <span class="detail-label">Disbursement Progress</span>
                             <div class="progress-wrapper">
                                 <div class="progress-bar-small">
-                                    <div id="eli-collection-progress" class="progress-fill-eli"></div>
+                                    <div class="progress-fill-eli" id="eli-disbursement-progress"></div>
                                 </div>
-                                <span id="eli-collection-percentage" class="progress-text">0%</span>
+                                <span class="progress-text" id="eli-disbursement-percentage">0%</span>
+                            </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <span class="detail-label">Collection Progress</span>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar-small">
+                                    <div class="progress-fill-eli" id="eli-collection-progress"></div>
+                                </div>
+                                <span class="progress-text" id="eli-collection-percentage">0%</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- NBL Team Details -->
+                <!-- NBL Details -->
                 <div class="team-detail-card nbl-detail">
                     <div class="team-detail-header">
                         <h3>NBL Performance</h3>
-                        <p class="target-info">Target: <span id="nbl-target-display">Loading...</span></p>
+                        <div class="target-info">Target: <span id="nbl-target-display">Loading...</span></div>
                     </div>
                     <div class="detail-metrics">
                         <div class="detail-metric-row">
                             <div class="detail-metric">
-                                <span class="detail-label">Disbursed</span>
-                                <span id="nbl-disbursed" class="detail-value">₹0</span>
+                                <span class="detail-label">Fresh Leads</span>
+                                <span class="detail-value" id="nbl-fresh-leads">0</span>
                             </div>
-                            <div class="progress-wrapper">
-                                <div class="progress-bar-small">
-                                    <div id="nbl-disbursement-progress" class="progress-fill-nbl"></div>
-                                </div>
-                                <span id="nbl-disbursement-percentage" class="progress-text">0%</span>
+                        </div>
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Total Amount</span>
+                                <span class="detail-value" id="nbl-total-amount">₹0</span>
+                            </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <div class="detail-metric">
+                                <span class="detail-label">Disbursed</span>
+                                <span class="detail-value" id="nbl-disbursed">₹0</span>
                             </div>
                         </div>
                         <div class="detail-metric-row">
                             <div class="detail-metric">
                                 <span class="detail-label">Collected</span>
-                                <span id="nbl-collected" class="detail-value">₹0</span>
+                                <span class="detail-value" id="nbl-collected">₹0</span>
                             </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <span class="detail-label">Disbursement Progress</span>
                             <div class="progress-wrapper">
                                 <div class="progress-bar-small">
-                                    <div id="nbl-collection-progress" class="progress-fill-nbl"></div>
+                                    <div class="progress-fill-nbl" id="nbl-disbursement-progress"></div>
                                 </div>
-                                <span id="nbl-collection-percentage" class="progress-text">0%</span>
+                                <span class="progress-text" id="nbl-disbursement-percentage">0%</span>
+                            </div>
+                        </div>
+                        <div class="detail-metric-row">
+                            <span class="detail-label">Collection Progress</span>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar-small">
+                                    <div class="progress-fill-nbl" id="nbl-collection-progress"></div>
+                                </div>
+                                <span class="progress-text" id="nbl-collection-percentage">0%</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    </div>
+    </main>
 
     <script src="app.js"></script>
 </body>
